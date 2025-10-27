@@ -1,36 +1,141 @@
+/* Importamos una fuente de Google que se parece a la de Los Simpson */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  /* Usamos el color azul del cielo de la intro de la serie */
+  background-color: #7AD3F6; 
+  background-image: 
+    radial-gradient(circle at 25% 25%, white 2px, transparent 0), 
+    radial-gradient(circle at 75% 75%, white 2px, transparent 0);
+  background-size: 50px 50px;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
   text-align: center;
   padding: 40px;
 }
 
 h1 {
-  color: #333;
+  /* Usamos la fuente importada que imita el logo */
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 4.5em;
+  color: #FFD90F; /* Amarillo Simpson */
+  /* Creamos un contorno negro con text-shadow */
+  text-shadow: 
+    -3px -3px 0 #000,  
+     3px -3px 0 #000,
+    -3px  3px 0 #000,
+     3px  3px 0 #000;
+  margin-bottom: 20px;
 }
 
 #game {
   background: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 10px;
   display: inline-block;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  /* Borde grueso estilo caricatura */
+  border: 4px solid black;
+  /* Sombra sólida para un efecto 2D "pop-out" */
+  box-shadow: 10px 10px 0 black;
+  min-width: 350px;
 }
 
 button {
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 1.2em;
   margin: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: 3px solid black;
   cursor: pointer;
+  transition: all 0.1s ease;
+  box-shadow: 4px 4px 0 black;
+  color: white;
+  text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
 }
 
-#yesBtn { background-color: #4caf50; color: white; }
-#noBtn { background-color: #f44336; color: white; }
-#startBtn { background-color: #2196f3; color: white; }
+button:active {
+  /* Efecto de botón presionado */
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+/* Colores temáticos para los botones */
+#yesBtn { background-color: #62A840; } /* Verde Springfield */
+#noBtn { background-color: #E54444; } /* Rojo/Rosa de la tele */
+#startBtn { background-color: #0074D9; } /* Azul de Marge */
+
+#question {
+  font-size: 1.3em;
+  min-height: 50px;
+  color: #333;
+  font-weight: bold;
+}
 
 #result {
   margin-top: 20px;
-  font-weight: bold;
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 2em;
+  color: #0074D9;
+  text-shadow: 
+    -2px -2px 0 #FFF,  
+     2px -2px 0 #FFF,
+    -2px  2px 0 #FFF,
+     2px  2px 0 #FFF,
+    -3px 3px 0 #000;
+}
+
+#characterImage {
+  margin-top: 20px;
+  max-width: 250px;
+  border-radius: 10px;
+  border: 4px solid black;
+  box-shadow: 8px 8px 0 black;
+  display: none; /* El JS lo hará visible */
+}
+
+
+/* --- ESTILOS NUEVOS PARA EL BOTÓN DE RESTAURAR --- */
+#reset-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+#resetBtn {
+  background-color: #f0ad4e; /* Naranja de advertencia */
+  font-family: 'Luckiest Guy', cursive;
+  font-size: 0.9em;
+  padding: 8px 15px;
+  border: 2px solid black;
+  box-shadow: 3px 3px 0 black;
+  color: white;
+  text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+#resetBtn:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+/* --- ESTILOS PARA LA IMAGEN DEL PERSONAJE --- */
+#characterImage {
+  display: block; /* Asegura que la imagen se comporte como un bloque para poder centrarla */
+  margin: 20px auto; /* Centra la imagen horizontalmente con margen superior/inferior */
+  max-width: 250px; /* Limita el tamaño máximo de la imagen */
+  height: auto; /* Mantiene la proporción de la imagen */
+  border: 5px solid #ffcc00; /* Borde amarillo Simpson */
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 5px 5px 0 black; /* Sombra para darle profundidad */
+}
+
+/* Ajuste para el texto del resultado para que no se pegue a la imagen */
+#result {
+  margin-bottom: 20px; /* Añade espacio debajo del texto del resultado */
 }

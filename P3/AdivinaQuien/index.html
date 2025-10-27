@@ -7,19 +7,28 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Adivina Quién </h1>
-  <div id="game">
-    <p id="question">Presiona "Empezar" para iniciar.</p>
-
-    <div class="buttons">
-      <button id="yesBtn">Sí</button>
-      <button id="noBtn">No</button>
-      <button id="startBtn">Empezar</button>
-    </div>
-
-    <div id="result"></div>
+  <div id="reset-container">
+    <button id="resetBtn">Restaurar Conocimiento</button>
   </div>
 
-  <script src="game.js"></script>
+  <h1>Adivina Quién</h1>
+  
+  <div id="game">
+    <div id="game-container">
+      <p id="question">Presiona "Empezar" para iniciar.</p>
+      <div class="buttons">
+        <button id="yesBtn">Sí</button>
+        <button id="noBtn">No</button>
+      </div>
+    </div>
+
+    <button id="startBtn">Empezar</button>
+
+    <div id="result"></div>
+    
+    <img id="characterImage" alt="Personaje Adivinado">
+    </div>
+
+  <script type="module" src="game.js"></script>
 </body>
 </html>

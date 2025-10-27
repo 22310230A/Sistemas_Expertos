@@ -1,72 +1,178 @@
-console.log("Juego cargado correctamente.");
+// Importamos el árbol de decisión *por defecto*
+import { arbolDecision as arbolPorDefecto } from './data.js';
 
-// Variables globales
-let personajes = [ { nombre:"Homer", hombre:true, peloAmarillo:true, gafas:false, nino:false, springfield:true, bigote:true, principal:true },
-  { nombre:"Marge", hombre:false, peloAmarillo:true, gafas:false, nino:false, springfield:true, bigote:false, principal:true },
-  { nombre:"Bart", hombre:true, peloAmarillo:true, gafas:false, nino:true, springfield:true, bigote:false, principal:true },
-  { nombre:"Lisa", hombre:false, peloAmarillo:true, gafas:false, nino:true, springfield:true, bigote:false, principal:true },
-  { nombre:"Maggie", hombre:false, peloAmarillo:true, gafas:false, nino:true, springfield:true, bigote:false, principal:true },
-  { nombre:"Ned Flanders", hombre:true, peloAmarillo:true, gafas:true, nino:false, springfield:true, bigote:true, principal:false },
-  { nombre:"Milhouse", hombre:true, peloAmarillo:true, gafas:true, nino:true, springfield:true, bigote:false, principal:false },
-  { nombre:"Krusty", hombre:true, peloAmarillo:true, gafas:true, nino:false, springfield:true, bigote:false, principal:false },
-  { nombre:"Moe Szyslak", hombre:true, peloAmarillo:true, gafas:false, nino:false, springfield:true, bigote:true, principal:false },
-  { nombre:"Barney Gumble", hombre:true, peloAmarillo:true, gafas:false, nino:false, springfield:true, bigote:true, principal:false },
-  { nombre:"Apu Nahasapeemapetilon", hombre:true, peloAmarillo:true, gafas:true, nino:false, springfield:true, bigote:false, principal:false },
-  { nombre:"Chief Wiggum", hombre:true, peloAmarillo:true, gafas:true, nino:false, springfield:true, bigote:true, principal:false },
-  { nombre:"Ralph Wiggum", hombre:true, peloAmarillo:true, gafas:false, nino:true, springfield:true, bigote:false, principal:false },
-  { nombre:"Sideshow Bob", hombre:true, peloAmarillo:true, gafas:false, nino:false, springfield:true, bigote:false, principal:false },
-  { nombre:"Patty Bouvier", hombre:false, peloAmarillo:true, gafas:true, nino:false, springfield:true, bigote:false, principal:false }];
+console.log("Juego cargado correctamente. Listo para empezar.");
 
-  let preguntas = [
-  { texto: "¿Es hombre?", atributo: "hombre" },
-  { texto: "¿Tiene pelo amarillo?", atributo: "peloAmarillo" },
-  { texto: "¿Usa gafas?", atributo: "gafas" },
-  { texto: "¿Es niño?", atributo: "nino" },
-  { texto: "¿Vive en Springfield?", atributo: "springfield" },
-  { texto: "¿Tiene bigote?", atributo: "bigote" },
-  { texto: "¿Es un personaje principal?", atributo: "principal" }
-];
+// ########## VARIABLES GLOBALES ##########
+const arbolGuardado = localStorage.getItem('arbolDecisionAprendido');
+let arbolDecision = arbolGuardado ? JSON.parse(arbolGuardado) : JSON.parse(JSON.stringify(arbolPorDefecto));
 
-let personajeSecreto = null;
+let nodoActual;
+let nodoAnterior = null;
+let ultimaRespuesta = null;
 
-// Referencias del DOM
+// ########## REFERENCIAS DEL DOM ##########
+const gameContainer = document.getElementById("game-container");
 const questionEl = document.getElementById("question");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
 const startBtn = document.getElementById("startBtn");
 const resultEl = document.getElementById("result");
+const characterImage = document.getElementById("characterImage");
+// --- ¡CORRECCIÓN! Referencia al botón de restaurar ---
+const resetBtn = document.getElementById("resetBtn");
 
-// Eventos iniciales
+// ########## EVENTOS ##########
 startBtn.addEventListener("click", iniciarJuego);
 yesBtn.addEventListener("click", () => responder(true));
 noBtn.addEventListener("click", () => responder(false));
+// --- ¡CORRECCIÓN! Evento para el botón de restaurar ---
+resetBtn.addEventListener("click", restaurarConocimiento);
 
-// Función inicial
-let currentQuestion = 0;
-let personajesRestantes = [...personajes]; // copia para filtrar
+// Ocultamos elementos al principio
+gameContainer.style.display = 'none';
+resultEl.style.display = 'none';
+characterImage.style.display = 'none';
+// Mostramos el botón de restaurar solo si hay conocimiento guardado
+resetBtn.style.display = arbolGuardado ? 'block' : 'none';
+
+// ########## FUNCIONES DEL JUEGO ##########
 
 function iniciarJuego() {
-  personajesRestantes = [...personajes];
-  currentQuestion = 0;
-  personajeSecreto = personajesRestantes[Math.floor(Math.random() * personajesRestantes.length)];
-  questionEl.textContent = preguntas[currentQuestion].texto;
-  resultEl.textContent = "";
+  console.log("Iniciando una nueva partida...");
+
+  nodoAnterior = null;
+  ultimaRespuesta = null;
+  nodoActual = arbolDecision;
+
+  startBtn.textContent = "Reiniciar Juego";
+  gameContainer.style.display = 'block';
+  resultEl.style.display = 'none';
+  characterImage.style.display = 'none';
+
+  hacerPregunta();
 }
 
-// Función responder (se completará después)
 function responder(respuesta) {
-  const pregunta = preguntas[currentQuestion];
-  
-  personajesRestantes = personajesRestantes.filter(p => p[pregunta.atributo] === respuesta);
+  if (!nodoActual) return;
 
-  currentQuestion++;
+  if (!nodoActual.pregunta && nodoActual.personaje) {
+    if (respuesta) {
+      mostrarResultadoFinal(nodoActual);
+    } else {
+      iniciarAprendizaje(nodoActual);
+    }
+    return;
+  }
 
-  if (personajesRestantes.length === 1) {
-    resultEl.textContent = `¡Adiviné! Es ${personajesRestantes[0].nombre} 🎉`;
-  } else if (currentQuestion < preguntas.length) {
-    questionEl.textContent = preguntas[currentQuestion].texto;
+  const siguienteNodoKey = respuesta ? 'si' : 'no';
+
+  if (nodoActual[siguienteNodoKey]) {
+    nodoAnterior = nodoActual;
+    ultimaRespuesta = siguienteNodoKey;
+    nodoActual = nodoActual[siguienteNodoKey];
+    hacerPregunta();
   } else {
-    resultEl.textContent = `No pude adivinar. 😢`;
+    alert("¡Uy! Me perdí en mi propio árbol de decisión.");
   }
 }
 
+function hacerPregunta() {
+  if (nodoActual.pregunta) {
+    questionEl.textContent = nodoActual.pregunta;
+  } else if (nodoActual.personaje) {
+    questionEl.textContent = `¡Ya lo tengo! ¿Tu personaje es... ${nodoActual.personaje}?`;
+  }
+}
+
+function mostrarResultadoFinal(resultado) {
+  console.log("¡Juego terminado! Resultado:", resultado.personaje);
+
+  gameContainer.style.display = 'none';
+
+  resultEl.style.display = 'block';
+  resultEl.textContent = `¡Ya lo tengo! Tu personaje es... ${resultado.personaje}`;
+
+  if (resultado.img) {
+    characterImage.src = resultado.img;
+    characterImage.alt = resultado.personaje;
+    characterImage.style.display = 'block';
+  }
+}
+
+/**
+ * Borra el conocimiento aprendido del localStorage y recarga la página.
+ */
+function restaurarConocimiento() {
+  if (confirm("¿Estás seguro de que quieres borrar todo lo que ha aprendido el juego? Volverá al conocimiento original.")) {
+    localStorage.removeItem('arbolDecisionAprendido');
+    alert("¡Conocimiento borrado! El juego se reiniciará.");
+    location.reload(); // Recarga la página para que se cargue el árbol por defecto
+  }
+}
+
+/**
+ * Inicia el proceso de aprendizaje cuando el juego falla.
+ */
+function iniciarAprendizaje(nodoFallido) {
+  const personajeAdivinado = nodoFallido.personaje;
+
+  gameContainer.style.display = 'none';
+  resultEl.style.display = 'block';
+
+  // 1. Preguntar el personaje correcto
+  resultEl.textContent = `¡Oh, no! Fallé.`;
+  const personajeCorrecto = prompt(`¡Fallé! ¿En qué personaje estabas pensando?`);
+
+  if (!personajeCorrecto) {
+    iniciarJuego();
+    return;
+  }
+
+  // 1.5. Preguntar la URL de la imagen
+  const nuevaImagenUrl = prompt(`¡OK! Para "${personajeCorrecto}", pega una URL de imagen (si la tienes). Si lo dejas vacío, no se mostrará imagen.`);
+
+  // 2. Preguntar la pregunta diferenciadora
+  const nuevaPregunta = prompt(`OK. Dame una pregunta (Sí/No) que diferencie a "${personajeCorrecto}" de "${personajeAdivinado}".`);
+
+  if (!nuevaPregunta) {
+    iniciarJuego();
+    return;
+  }
+
+  // 3. Preguntar la respuesta para el NUEVO personaje
+  const respuestaParaNuevo = confirm(`Para "${personajeCorrecto}", ¿la respuesta a "${nuevaPregunta}" es "Sí"?\n\n(Presiona "Aceptar" para SÍ, "Cancelar" para NO)`);
+
+  // 4. Guardamos los datos del personaje antiguo
+  const nodoPersonajeAntiguo = JSON.parse(JSON.stringify(nodoFallido));
+
+  // 5. Creamos el nodo para el personaje nuevo
+  const nodoPersonajeNuevo = {
+    personaje: personajeCorrecto,
+    img: nuevaImagenUrl || "" // Guarda la URL o una cadena vacía
+  };
+
+  // 6. Obtenemos el nodo que vamos a *reemplazar*.
+  const nodoAModificar = nodoAnterior ? nodoAnterior[ultimaRespuesta] : arbolDecision;
+
+  // 7. Limpiamos el nodo actual y lo convertimos en un nodo de PREGUNTA
+  delete nodoAModificar.personaje;
+  delete nodoAModificar.img;
+  nodoAModificar.pregunta = nuevaPregunta;
+
+  // 8. Asignamos los personajes (antiguo y nuevo) a las ramas correctas
+  if (respuestaParaNuevo) {
+    nodoAModificar.si = nodoPersonajeNuevo;
+    nodoAModificar.no = nodoPersonajeAntiguo;
+  } else {
+    nodoAModificar.si = nodoPersonajeAntiguo;
+    nodoAModificar.no = nodoPersonajeNuevo;
+  }
+
+  // 9. Guardamos el árbol aprendido en el localStorage
+  localStorage.setItem('arbolDecisionAprendido', JSON.stringify(arbolDecision));
+
+  // 10. Informar al usuario y reiniciar
+  alert("¡Gracias! He aprendido algo nuevo. El juego se reiniciará para usar el nuevo conocimiento.");
+  location.reload();
+}
