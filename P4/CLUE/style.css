@@ -1,0 +1,284 @@
+/* --- style.css --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display.swap');
+
+/* --- FONDO Y CUERPO --- */
+body { 
+    font-family: Arial, sans-serif; 
+    color: #e0e0e0;
+    background-color: #1f1f1f; 
+    background-image: url('images/fondo.png');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+}
+
+/* ============================================= */
+/* !! MODAL DE INTRO (POP-UP) !! */
+/* ============================================= */
+#intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+#intro-content {
+    background-color: rgba(44, 44, 44, 0.95);
+    border: 1px solid #777;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    border-radius: 5px;
+    padding: 25px 35px;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+#intro-content h1 {
+    font-size: 3em;
+    margin-top: 0;
+}
+#intro-content h2 {
+    font-family: 'Bangers', cursive;
+    color: #f0f0f0;
+    font-size: 2.2em;
+    text-align: center;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #ffd90f;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+.rules-list {
+    list-style: none; padding-left: 0; margin-bottom: 25px;
+}
+.rules-list li {
+    font-size: 1.1em;
+    background-color: rgba(0,0,0,0.2);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border-left: 4px solid #ffd90f;
+}
+button#start-game-button {
+    width: 100%; padding: 12px; font-family: 'Bangers', cursive;
+    font-size: 1.8em; letter-spacing: 2px; color: #333;
+    border: none; border-radius: 5px; cursor: pointer;
+    background-color: #ffd90f; box-shadow: 0 4px 0 #c7a100;
+}
+button#start-game-button:hover { background-color: #c7a100; }
+
+/* ============================================= */
+/* !! DASHBOARD DE 2 COLUMNAS !! */
+/* ============================================= */
+#main-dashboard {
+    display: grid;
+    grid-template-columns: 58% 1fr;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    display: none; /* Oculto al inicio */
+}
+@media (max-width: 900px) {
+    #main-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- COLUMNA IZQUIERDA (EXPEDIENTE) --- */
+#case-file-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+}
+
+/* --- COLUMNA DERECHA (ACCIONES) --- */
+#action-panel-column {
+    position: sticky;
+    top: 20px;
+    background-color: rgba(44, 44, 44, 0.92);
+    border: 1px solid #777;
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    border-radius: 5px;
+    padding: 20px;
+}
+@media (max-width: 900px) {
+    #action-panel-column {
+        position: static;
+    }
+}
+
+/* --- ESTILOS DE LOS COMPONENTES --- */
+
+/* Títulos (reutilizados) */
+h1 {
+    font-family: 'Bangers', cursive;
+    color: #ffd90f;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 4px 4px 5px rgba(0,0,0,0.5);
+    font-size: 3.5em; 
+    text-align: center;
+    margin: 0 0 10px 0;
+    letter-spacing: 1px;
+}
+
+/* ============================================= */
+/* !! CAMBIO 1: Texto de la historia más blanco !! */
+/* ============================================= */
+#story-section p {
+    text-align: center;
+    font-style: italic;
+    color: #f0f0f0; /* <<< CAMBIADO de #aaa a #f0f0f0 */
+    border-bottom: 1px dashed #666;
+    padding-bottom: 20px;
+    margin: 0;
+    font-size: 1.1em; /* Un poco más grande */
+    line-height: 1.5;
+}
+
+/* Contador de Donas */
+#dona-counter {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2em;
+    color: #ffd90f;
+    letter-spacing: 1px;
+    text-align: center;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 2px #000;
+}
+#dona-counter span {
+    font-size: 1.3em;
+    color: #fff;
+    padding: 0 10px;
+}
+
+/* ============================================= */
+/* !! CAMBIO 2: Cuaderno de notas más opaco !! */
+/* ============================================= */
+#notebook-container {
+    background-color: rgba(0,0,0,0.6); /* <<< CAMBIADO de 0.3 a 0.6 */
+    border: 1px solid #777;
+    border-radius: 5px;
+    padding: 15px;
+}
+#notebook-container h3 {
+    font-family: 'Bangers', cursive;
+    color: #ffd90f;
+    font-size: 1.8em;
+    text-align: center;
+    letter-spacing: 1px;
+    margin: 0 0 15px 0;
+    border-bottom: 1px solid #777;
+    padding-bottom: 10px;
+}
+.notebook-section { margin-bottom: 10px; }
+.notebook-section h4 {
+    font-weight: bold; color: #fff;
+    border-bottom: 1px solid #666;
+    padding-bottom: 5px; margin: 0 0 10px 0;
+}
+.notebook-section ul {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-wrap: wrap;
+}
+.notebook-section li {
+    font-size: 0.9em; color: #ddd; padding: 5px 10px;
+    margin: 3px; background-color: rgba(255,255,255,0.1);
+    border-radius: 3px; cursor: pointer; transition: all 0.2s ease;
+}
+.notebook-section li:hover { background-color: rgba(255,255,255,0.2); }
+.notebook-section li.crossed-off {
+    text-decoration: line-through;
+    text-decoration-color: #ffd90f;
+    text-decoration-thickness: 2px;
+    background-color: rgba(0,0,0,0.3);
+    color: #888;
+}
+
+/* Display de Mensajes */
+#message-display { 
+    text-align: center;
+    min-height: 100px;
+}
+.message {
+    padding: 15px; border-radius: 5px;
+    font-size: 1.1em; font-weight: bold;
+    line-height: 1.5; margin-bottom: 10px;
+}
+.clue-message {
+    background-color: #2a3b4a; border: 2px solid #007bff;
+    color: #d1eaff; text-align: left;
+}
+.win-message {
+    background-color: #2a4b2a; border: 2px solid #5cb85c;
+    color: #dff0d8;
+}
+.error-message {
+    background-color: #4a2a2a; border: 2px solid #d9534f;
+    color: #f2dede;
+}
+
+/* Menús de Selección */
+.selection-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+.selection-area label {
+    display: block; margin-bottom: 5px;
+    font-weight: bold; color: #f0f0f0;
+}
+.selection-area select {
+    width: 100%; padding: 10px; border-radius: 4px;
+    border: 1px solid #777; font-size: 1em;
+    background-color: #555; color: #f0f0f0;
+    box-sizing: border-box; 
+}
+
+/* Botones de Acción */
+#action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2x2 */
+    gap: 15px;
+    margin-top: 20px;
+}
+button.investigate-button {
+    width: 100%; padding: 12px; font-family: 'Bangers', cursive;
+    font-size: 1.2em; letter-spacing: 1px;
+    background-color: #007bff; color: white; border: none;
+    border-radius: 5px; cursor: pointer; transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #0056b3;
+}
+button.investigate-button:hover {
+    background-color: #0056b3;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #0056b3;
+}
+button#accuse-button {
+    width: 100%; padding: 12px; font-family: 'Bangers', cursive;
+    font-size: 1.2em; letter-spacing: 1px;
+    background-color: #d83c2c; color: white; border: none;
+    border-radius: 5px; cursor: pointer; transition: all 0.2s ease;
+    box-shadow: 0 4px 0 #a82d22;
+}
+button#accuse-button:hover {
+    background-color: #a82d22;
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #a82d22;
+}
+button:disabled {
+    background-color: #555 !important; color: #999 !important;
+    box-shadow: 0 4px 0 #333 !important;
+    cursor: not-allowed !important;
+    transform: translateY(0) !important;
+}

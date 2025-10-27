@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clue - Edición Springfield</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div id="intro-content">
+            <h1>¡Misterio en Springfield!</h1>
+            <h2>¿Cómo Jugar?</h2>
+            <p>Un crimen ha sido cometido. Tienes 6 Donas 🍩 para financiar tu investigación y un Cuaderno de Detective.</p>
+            <ul class="rules-list">
+                <li><strong>Investigar (1 Dona):</strong> Gasta una dona para descubrir un item INOCENTE.</li>
+                <li><strong>Tachar:</strong> Haz clic en los items del cuaderno para tacharlos a medida que los descartas.</li>
+                <li><strong>Acusación Final:</strong> Cuando estés 100% seguro, haz tu acusación. ¡Si fallas, pierdes!</li>
+            </ul>
+            <button id="start-game-button">¡Empezar a Investigar!</button>
+        </div>
+    </div>
+
+    <div id="main-dashboard">
+        
+        <div id="case-file-column">
+            <section id="story-section">
+                <h1></h1> <p></p> </section>
+            
+            <section id="notebook-container">
+                <h3>Cuaderno de Detective (Haz clic para tachar)</h3>
+                <div class="notebook-section">
+                    <h4>Sospechosos</h4>
+                    <ul id="notebook-personajes"></ul>
+                </div>
+                <div class="notebook-section">
+                    <h4>Armas</h4>
+                    <ul id="notebook-armas"></ul>
+                </div>
+                <div class="notebook-section">
+                    <h4>Locaciones</h4>
+                    <ul id="notebook-locaciones"></ul>
+                </div>
+            </section>
+            
+            <section id="message-display">
+                </section>
+        </div>
+
+        <div id="action-panel-column">
+            <section id="dona-counter">
+                Donas restantes: <span>6</span>
+            </section>
+            
+            <section class="selection-grid">
+                <div class="selection-area">
+                    <label for="personaje">Sospechoso:</label>
+                    <select id="personaje"></select>
+                </div>
+                <div class="selection-area">
+                    <label for="arma">Arma:</label>
+                    <select id="arma"></select>
+                </div>
+                <div class="selection-area">
+                    <label for="locacion">Lugar:</label>
+                    <select id="locacion"></select>
+                </div>
+            </section>
+            
+            <section id="action-buttons">
+                <button id="investigate-person-button" class="investigate-button">Investigar Sospechoso (1🍩)</button>
+                <button id="investigate-weapon-button" class="investigate-button">Analizar Arma (1🍩)</button>
+                <button id="investigate-location-button" class="investigate-button">Revisar Lugar (1🍩)</button>
+                <button id="accuse-button">¡Acusación Final!</button>
+            </section>
+        </div>
+
+    </div>
+
+    <script src="game.js" type="module"></script>
+</body>
+</html>
